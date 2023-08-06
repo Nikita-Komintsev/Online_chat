@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
+import EmojiPicker from 'emoji-picker-react';
 
 import styles from '../styles/Chat.module.css';
+import icon from "../images/emoji.svg";
 
 const socket = io.connect('http://localhost:5000');
 
@@ -11,7 +13,8 @@ const Chat = () => {
   const [params, setParams] = useState({ room: "", user: "" });
   const [state, setState] = useState([]);
   const [message, setMessage] = useState("");
-
+  const [isOpen, setOpen]= useState(false);
+  
   useEffect(()=>{
     const searchParams = Object.fromEntries(new URLSearchParams(search));
     setParams(searchParams);
@@ -27,7 +30,8 @@ const Chat = () => {
   const leftRoom = () => {};
   const handleChange = () => {};
   const handleSubmit = () => {};
-
+  const onEmojiClick = ({ emoji }) => setMessage(`${message} ${emoji}`);
+  
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -58,6 +62,16 @@ const Chat = () => {
               autoComplete='off'
               required
             />
+          </div>
+
+          <div className={styles.emoji}>
+            <img src={icon} alt='' onClick={() => setOpen(!isOpen)} />
+            
+            {isOpen && (
+              <div className={styles.emojies}>
+              <EmojiPicker onEmojiClick={onEmojiClick}/>
+            </div>
+            )}
           </div>
 
           <div className={styles.button}> 
