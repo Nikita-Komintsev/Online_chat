@@ -6,6 +6,8 @@ import EmojiPicker from 'emoji-picker-react';
 import styles from '../styles/Chat.module.css';
 import icon from "../images/emoji.svg";
 
+import Messages from './Messages';
+
 const socket = io.connect('http://localhost:5000');
 
 const Chat = () => {
@@ -28,8 +30,11 @@ const Chat = () => {
   }, [])
 
   const leftRoom = () => {};
-  const handleChange = () => {};
+
+  const handleChange = ({ target: {value} }) => setMessage(value);
+
   const handleSubmit = () => {};
+
   const onEmojiClick = ({ emoji }) => setMessage(`${message} ${emoji}`);
   
   return (
@@ -45,39 +50,37 @@ const Chat = () => {
           Left room
         </button>
       </div>
-
       <div className={styles.messages}>
-          {state.map(({message}, idx) => (
-            <span key={idx} >{message}</span>))}
+        <Messages messages={state} name={params.name}/>
+      </div>
+
+      <form className={styles.form}>
+        <div className={styles.input}>
+          <input 
+            type="text" 
+            name='message' 
+            value={message} 
+            placeholder='Write message'
+            onChange={handleChange}
+            autoComplete='off'
+            required
+          />
         </div>
 
-        <form className={styles.form}>
-          <div className={styles.input}>
-            <input 
-              type="text" 
-              name='message' 
-              value={message} 
-              placeholder='Write message'
-              onChange={handleChange}
-              autoComplete='off'
-              required
-            />
+        <div className={styles.emoji}>
+          <img src={icon} alt='' onClick={() => setOpen(!isOpen)} />
+          
+          {isOpen && (
+            <div className={styles.emojies}>
+            <EmojiPicker onEmojiClick={onEmojiClick}/>
           </div>
+          )}
+        </div>
 
-          <div className={styles.emoji}>
-            <img src={icon} alt='' onClick={() => setOpen(!isOpen)} />
-            
-            {isOpen && (
-              <div className={styles.emojies}>
-              <EmojiPicker onEmojiClick={onEmojiClick}/>
-            </div>
-            )}
-          </div>
-
-          <div className={styles.button}> 
-            <input type='submit' onSubmit={handleSubmit} value="Send message" />
-          </div>
-        </form>
+        <div className={styles.button}> 
+          <input type='submit' onSubmit={handleSubmit} value="Send message" />
+        </div>
+      </form>
     </div>
   )
 }
