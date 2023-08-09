@@ -33,7 +33,15 @@ const Chat = () => {
 
   const handleChange = ({ target: {value} }) => setMessage(value);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if(!message) return;
+
+    socket.emit('sendMessage', { message, params});
+
+    setMessage("");
+  };
 
   const onEmojiClick = ({ emoji }) => setMessage(`${message} ${emoji}`);
   
@@ -54,7 +62,7 @@ const Chat = () => {
         <Messages messages={state} name={params.name}/>
       </div>
 
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.input}>
           <input 
             type="text" 
