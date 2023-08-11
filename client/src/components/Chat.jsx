@@ -32,7 +32,7 @@ const Chat = () => {
   }, [])
 
   useEffect(() => {
-    socket.on('joinRoom', ({ data: {users} }) => {
+    socket.on('room', ({ data: {users} }) => {
       setUsers((users.length));
     });
   }, [])
