@@ -44,11 +44,19 @@ io.on('connection', (socket)=>{
         if(user){
             io.to(user.room).emit('message', {data: {user, message} });
         }
-    })
+    });
+
+    socket.on('leftRoom', ({ params}) => {
+        const user = findUser(params);
+
+        if(user){
+            io.to(user.room).emit('message', {data: {user, message} });
+        }
+    });
 
     io.on('disconnect', ()=>{
         console.log('Disconnect');
-    })
+    });
 })
 
 server.listen(5000, ()=>{
