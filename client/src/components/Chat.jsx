@@ -63,7 +63,7 @@ const Chat = () => {
           {params.room}
         </div>
         <div className={styles.users}>
-          {users} in room
+          {users} users in room
         </div>
         <button className={styles.left} onClick={leftRoom}>
           Left room

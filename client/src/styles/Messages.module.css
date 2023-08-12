@@ -47,3 +47,9 @@
   .me .user {
     padding-right: 10px;
   }
+
+  .info {
+    background: #514c4c;
+    text-align: center;
+    margin-bottom: 10px;
+  }

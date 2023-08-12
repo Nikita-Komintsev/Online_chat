@@ -25,14 +25,14 @@ io.on('connection', (socket)=>{
 
         const { user, isExist } = addUser({name, room});
 
-        const userMessage = isExist ? `${user.name}, in chat` :  `Hello ${user.name}`
+        const userMessage = isExist ? `${user.name}, in chat` :  `${user.name} in ${user.room}`
 
         socket.emit('message', {
-            data: {user: {name: "Admin"}, message: userMessage}
+            data: {user: {name: ""}, message: userMessage}
         });
 
         socket.broadcast.to(user.room).emit('message', {
-            data: {user: {name: "Admin"}, message: `${user.name} has joined`}
+            data: {user: {name: ""}, message: `${user.name} has joined`}
         });
 
         io.to(user.room).emit('room', { data: { users: getUsersInRoom(user.room)} });
@@ -52,7 +52,7 @@ io.on('connection', (socket)=>{
         if(user){
             const { room, name } = user;
 
-            io.to(room).emit('message', {data: {user: {name: "Admin" }, message: `${name} has left`} });
+            io.to(room).emit('message', {data: {user: {name: "" }, message: `${name} has left`} });
 
             io.to(room).emit('room', { data: { users: getUsersInRoom(room)} });
         }
